@@ -3,6 +3,15 @@ import logging
 import os
 
 def main():
+    global dirs_paths, dirs_paths_exist
+    
+    download_path = '/home/danilo/Downloads/fake-download-path'
+    files = [file for file in os.listdir(download_path) if os.path.isfile(os.path.join(download_path, file))]
+
+    dirs_names = ('images', 'videos', 'documents', 'archives', 'audio', 'books')
+    dirs_paths = {dir_name: os.path.join(download_path, dir_name.capitalize()) for dir_name in dirs_names}
+    dirs_paths_exist = {name:os.path.exists(path) for name, path in dirs_paths.items()}
+    
     typelist = get_filetypes(files)
     move_files(zip(files, typelist), dirs_paths)
 
@@ -57,13 +66,6 @@ def move_files(files_plus_filetypes: list, dirs_paths: dict) -> None:
             move_file(filepath, category_dirs[category])
         else:
             move_file(filepath, category)
-
-download_path = '/home/danilo/Downloads/fake-download-path'
-files = [file for file in os.listdir(download_path) if os.path.isfile(os.path.join(download_path, file))]
-
-dirs_names = ('images', 'videos', 'documents', 'archives', 'audio', 'books')
-dirs_paths = {dir_name: os.path.join(download_path, dir_name.capitalize()) for dir_name in dirs_names}
-dirs_paths_exist = {name:os.path.exists(path) for name, path in dirs_paths.items()}
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
