@@ -47,6 +47,12 @@ def move_files(files_plus_filetypes: list, dirs_paths: dict) -> None:
         """ Logs where the file was and where it was moved to """
         logging.info(f'File {source} moved to {dest}')
 
+    category_dirs = {
+        'image': 'images',
+        'video': 'videos',
+        'application': 'documents'
+    }
+
     for filepath, kind in files_plus_filetypes:
         if kind is None:
             continue
@@ -56,12 +62,10 @@ def move_files(files_plus_filetypes: list, dirs_paths: dict) -> None:
             move_file(filepath, 'books')
 
         category = kind.mime.split('/')[0]
-        
-        category_dirs = {
-            'image': 'images',
-            'video': 'videos',
-            'application': 'archives'
-        }
+        if category in category_dirs:
+            move_file(filepath, category_dirs[category])
+        else:
+            move_file(filepath, category)
 
 download_path = '/home/danilo/Downloads/fake-download-path'
 files = list_files(download_path)
