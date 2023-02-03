@@ -6,15 +6,6 @@ def main():
     typelist = get_filetypes(files)
     move_files(zip(files, typelist), dirs_paths)
 
-def list_files(dirname: str) -> list:
-    files = []
-    for filename in os.listdir(dirname):
-        filepath = os.path.join(dirname, filename)
-        if os.path.isdir(filepath):
-            continue
-        files.append(filepath)
-    return files
-
 def get_filetypes(filelist: list) -> list:
     """ Returns a filetype.types object for each file in list """
     typelist = []
@@ -35,14 +26,14 @@ def move_file(filepath: str, category: str):
         os.mkdir(dirs_paths[dirname])
         logging.info(f'Directory for {dirname}: {dirs_paths[dirname]} was created')
         dirs_paths_exist[dirname] = True
-    
+
     if not dirs_paths_exist[category]:
         create_dir_if_doesnt_exist(category)
     os.rename(filepath, os.path.join(dirs_paths[category], os.path.basename(filepath)))
 
 def move_files(files_plus_filetypes: list, dirs_paths: dict) -> None:
     """ Moves each file in its correct directory """
-    
+
     def log_file_move(source, dest):
         """ Logs where the file was and where it was moved to """
         logging.info(f'File {source} moved to {dest}')
@@ -68,7 +59,7 @@ def move_files(files_plus_filetypes: list, dirs_paths: dict) -> None:
             move_file(filepath, category)
 
 download_path = '/home/danilo/Downloads/fake-download-path'
-files = list_files(download_path)
+files = [file for file in os.listdir(download_path) if os.path.isfile(os.path.join(download_path, file))]
 
 dirs_names = ('images', 'videos', 'documents', 'archives', 'audio', 'books')
 dirs_paths = {dir_name: os.path.join(download_path, dir_name.capitalize()) for dir_name in dirs_names}
