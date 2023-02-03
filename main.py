@@ -33,13 +33,10 @@ def move_file(filepath: str, category: str):
         dirs_paths_exist[category] = True
 
     os.rename(filepath, os.path.join(dirs_paths[category], os.path.basename(filepath)))
+    logging.info(f'File {filepath} moved to {dirs_paths[category]}')
 
 def move_files(files_plus_filetypes: list, dirs_paths: dict) -> None:
     """ Moves each file in its correct directory """
-
-    def log_file_move(source, dest):
-        """ Logs where the file was and where it was moved to """
-        logging.info(f'File {source} moved to {dest}')
 
     category_dirs = {
         'image': 'images',
