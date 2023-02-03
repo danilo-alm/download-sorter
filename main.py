@@ -27,14 +27,11 @@ def get_filetypes(filelist: list) -> list:
     return typelist
 
 def move_file(filepath: str, category: str):
-    def create_dir(dirname):
-        """ Creates dir in dirs_paths[dirname] location if it doesn't exist yet """
-        os.mkdir(dirs_paths[dirname])
-        logging.info(f'Directory for {dirname}: {dirs_paths[dirname]} was created')
-        dirs_paths_exist[dirname] = True
-
     if not dirs_paths_exist[category]:
-        create_dir(category)
+        os.mkdir(dirs_paths[category])
+        logging.info(f'Directory for {category}: {dirs_paths[category]} was created')
+        dirs_paths_exist[category] = True
+
     os.rename(filepath, os.path.join(dirs_paths[category], os.path.basename(filepath)))
 
 def move_files(files_plus_filetypes: list, dirs_paths: dict) -> None:
