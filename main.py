@@ -6,7 +6,8 @@ def main():
     global dirs_paths, dirs_paths_exist
     
     download_path = '/home/danilo/Downloads/fake-download-path'
-    files = [file for file in os.listdir(download_path) if os.path.isfile(os.path.join(download_path, file))]
+    files = [os.path.join(download_path, file) for file in os.listdir(download_path)
+             if os.path.isfile(os.path.join(download_path, file))]
 
     dirs_names = ('images', 'videos', 'documents', 'archives', 'audio', 'books')
     dirs_paths = {dir_name: os.path.join(download_path, dir_name.capitalize()) for dir_name in dirs_names}
@@ -60,6 +61,7 @@ def move_files(files_plus_filetypes: list, dirs_paths: dict) -> None:
         # Handle ebooks separately
         if kind.extension == 'epub' or kind.extension == 'mobi':
             move_file(filepath, 'books')
+            continue
 
         category = kind.mime.split('/')[0]
         if category in category_dirs:
